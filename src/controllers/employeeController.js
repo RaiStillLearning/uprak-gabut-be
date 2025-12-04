@@ -50,28 +50,36 @@ exports.getEmployeeById = async (req, res) => {
 // ✅ CREATE
 exports.createEmployee = async (req, res) => {
   try {
-    const { nik, nama, jabatan, gaji, createdBy } = req.body;
+    const { nik, nama, jabatan, gaji } = req.body
 
-    if (!nik || !nama || !jabatan)
-      return res.status(400).json({ message: "Field wajib diisi" });
-
-    const exist = await Employee.findOne({ nik });
-    if (exist)
-      return res.status(400).json({ message: "NIK sudah terdaftar" });
+    // ✅ CEK DUPLIKAT NIK
+    const existing = await Employee.findOne({ nik })
+    if (existing) {
+      return res.status(400).json({
+        message: "NIK sudah terdaftar!",
+      })
+    }
 
     const employee = await Employee.create({
       nik,
       nama,
       jabatan,
       gaji,
-      createdBy: createdBy || "system",
-    });
+      createdBy: "admin",
+    })
 
-    res.status(201).json(employee);
+    res.status(201).json({
+      message: "Employee berhasil ditambahkan",
+      data: employee,
+    })
+
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      message: "Gagal menambahkan employee",
+      error: error.message,
+    })
   }
-};
+}
 
 // ✅ UPDATE
 exports.updateEmployee = async (req, res) => {
