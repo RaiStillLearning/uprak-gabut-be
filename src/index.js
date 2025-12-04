@@ -14,6 +14,7 @@ app.use(morgan("dev"));
 
 // ✅ Routes
 app.use("/api/employees", employeeRoutes);
+app.use("/api/auth", require("./routes/authRoutes"));
 
 // ✅ Export app ke server.js
 module.exports = app;
