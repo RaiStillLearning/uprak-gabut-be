@@ -22,7 +22,7 @@ app.use(morgan("dev"));
 // ✅ Routes utama
 app.use("/api/employees", employeeRoutes);
 const authRoutes = require("./routes/authRoutes");
-app.use("/api", authRoutes);
+app.use("/api/auth", authRoutes);
 
 
 module.exports = app
